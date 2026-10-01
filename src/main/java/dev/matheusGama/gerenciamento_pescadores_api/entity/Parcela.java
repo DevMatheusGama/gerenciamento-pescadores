@@ -21,6 +21,8 @@ public class Parcela {
 
     private String nomeMes;
 
+    private long mes;
+
     private double valor;
 
     private Boolean pago;
