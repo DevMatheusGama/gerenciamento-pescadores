@@ -7,5 +7,5 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface PescadorRepository extends JpaRepository<Pescador, UUID> {
-    Optional<Pescador> findByCpf();
+    Optional<Pescador> findByCpf(String cpf);
 }

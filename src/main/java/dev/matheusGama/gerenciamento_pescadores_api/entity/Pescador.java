@@ -7,9 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.validator.constraints.br.CPF;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 @Setter
@@ -30,5 +28,5 @@ public class Pescador {
     private String endereco;
 
     @OneToMany(mappedBy = "pescador", cascade = CascadeType.ALL)
-    private Set<Parcela> pareclas = new HashSet<>();
+    private List<Parcela> parcelas = new ArrayList<>();
 }

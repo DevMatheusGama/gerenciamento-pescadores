@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -23,7 +24,7 @@ public class Parcela {
 
     private long mes;
 
-    private double valor;
+    private BigDecimal valor;
 
     private Boolean pago;
 
