@@ -1,6 +1,7 @@
 package dev.matheusGama.gerenciamento_pescadores_api.controller;
 
 import dev.matheusGama.gerenciamento_pescadores_api.dto.request.PescadorRequest;
+import dev.matheusGama.gerenciamento_pescadores_api.dto.response.ParcelaResumoResponse;
 import dev.matheusGama.gerenciamento_pescadores_api.dto.response.PescadorResponse;
 import dev.matheusGama.gerenciamento_pescadores_api.service.PescadorService;
 import lombok.RequiredArgsConstructor;
@@ -19,9 +20,7 @@ public class PescadorController {
 
     @PostMapping
     public ResponseEntity<PescadorResponse> createPescador(@RequestBody PescadorRequest request) {
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(pescadorService.createPescador(request));
+        return ResponseEntity.ok(pescadorService.createPescador(request));
     }
 
     @GetMapping
@@ -47,6 +46,13 @@ public class PescadorController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletePescador(@PathVariable UUID id) {
         pescadorService.deletePescador(id);
+
         return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/{pescadorId}/parcelas/{mes}/pagar")
+    public ResponseEntity<ParcelaResumoResponse> pagarParcela(@PathVariable UUID pescadorId, @PathVariable long mes) {
+        ParcelaResumoResponse parcela = pescadorService.pagarParcela(pescadorId, mes);
+        return ResponseEntity.ok(parcela);
     }
 }

@@ -10,8 +10,10 @@ import dev.matheusGama.gerenciamento_pescadores_api.repository.ParcelaRepository
 import dev.matheusGama.gerenciamento_pescadores_api.repository.PescadorRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -101,5 +103,30 @@ public class PescadorService {
         pescador.setEndereco(request.endereco());
 
         return toResponse(pescadorRepository.save(pescador));
+    }
+
+    @Transactional
+    public ParcelaResumoResponse pagarParcela(UUID pescador_Id, long mes) {
+        Pescador pescador = pescadorRepository.findById(pescador_Id)
+                .orElseThrow(() -> new RuntimeException("Erro ao buscar pescador com id: " + pescador_Id));
+
+        Parcela parcela = pescador.getParcelas().stream()
+                .filter(p -> p.getMes() == mes)
+                .findFirst()
+                .orElseThrow(() ->
+                        new RuntimeException("Parcela do mês " + mes + " não encontrada")
+                );
+
+        parcela.setPago(true);
+        parcela.setDataPagamento(LocalDateTime.now());
+
+        return new ParcelaResumoResponse(
+                parcela.getId(),
+                parcela.getNomeMes(),
+                parcela.getMes(),
+                parcela.getValor(),
+                parcela.getPago(),
+                parcela.getDataPagamento()
+        );
     }
 }
