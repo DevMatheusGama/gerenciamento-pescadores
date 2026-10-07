@@ -10,7 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 
-public class UsuarioCustonDetails implements UserDetails {
+public class CustonUserDetails implements UserDetails {
     private Usuario usuario;
 
     @Override
