@@ -13,6 +13,10 @@ import java.util.List;
 public class CustonUserDetails implements UserDetails {
     private Usuario usuario;
 
+    public CustonUserDetails(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         if (usuario.getRole() == RoleUser.ADMIN) {
