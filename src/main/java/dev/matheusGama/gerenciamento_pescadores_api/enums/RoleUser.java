@@ -1,8 +1,8 @@
 package dev.matheusGama.gerenciamento_pescadores_api.enums;
 
 public enum RoleUser {
-    ADMIN("ADMIN"),
-    USER("USER");
+    ADMIN("ROLE_ADMIN"),
+    USER("ROLE_USER");
 
     private final String role;
 
