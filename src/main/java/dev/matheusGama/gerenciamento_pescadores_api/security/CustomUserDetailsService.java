@@ -18,6 +18,6 @@ public class CustomUserDetailsService implements UserDetailsService {
         Usuario usuario = usuarioRepository.findByEmail(username)
                 .orElseThrow(() -> new RuntimeException("Erro ao buscar usuario com email: " + username));
 
-        return new CustonUserDetails(usuario);
+        return new CustomUserDetails(usuario);
     }
 }

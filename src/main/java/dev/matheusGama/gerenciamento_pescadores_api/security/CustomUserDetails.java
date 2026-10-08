@@ -10,10 +10,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 
-public class CustonUserDetails implements UserDetails {
+public class CustomUserDetails implements UserDetails {
     private Usuario usuario;
 
-    public CustonUserDetails(Usuario usuario) {
+    public CustomUserDetails(Usuario usuario) {
         this.usuario = usuario;
     }
 
@@ -21,12 +21,16 @@ public class CustonUserDetails implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         if (usuario.getRole() == RoleUser.ADMIN) {
             return List.of(
-                    new SimpleGrantedAuthority("ADMIN"),
-                    new SimpleGrantedAuthority("USER")
+                    new SimpleGrantedAuthority("ROLE_ADMIN"),
+                    new SimpleGrantedAuthority("ROLE_USER")
             );
         };
 
-        return List.of(new SimpleGrantedAuthority("USER"));
+        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
     }
 
     @Override
