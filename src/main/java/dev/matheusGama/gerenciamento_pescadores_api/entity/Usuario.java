@@ -10,6 +10,7 @@ import lombok.Setter;
 
 import java.util.UUID;
 
+@Entity
 @Getter
 @Setter
 @AllArgsConstructor

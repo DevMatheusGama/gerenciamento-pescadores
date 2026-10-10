@@ -42,6 +42,8 @@ public class JwtService {
     }
 
     private Instant expireToken() {
-        return LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("02:00"));
+        return LocalDateTime.now()
+                .plusHours(2)
+                .toInstant(ZoneOffset.of("-03:00"));
     }
 }
