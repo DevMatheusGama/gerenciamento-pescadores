@@ -6,6 +6,9 @@ import dev.matheusGama.gerenciamento_pescadores_api.dto.response.PescadorRespons
 import dev.matheusGama.gerenciamento_pescadores_api.entity.Parcela;
 import dev.matheusGama.gerenciamento_pescadores_api.entity.Pescador;
 import dev.matheusGama.gerenciamento_pescadores_api.enuns.ParcelaEnum;
+import dev.matheusGama.gerenciamento_pescadores_api.exception.ErrorLocatingMonthException;
+import dev.matheusGama.gerenciamento_pescadores_api.exception.ErrorLocatingPescadorByCpfException;
+import dev.matheusGama.gerenciamento_pescadores_api.exception.ErrorLocatingPescadorByIDException;
 import dev.matheusGama.gerenciamento_pescadores_api.repository.ParcelaRepository;
 import dev.matheusGama.gerenciamento_pescadores_api.repository.PescadorRepository;
 import lombok.RequiredArgsConstructor;
@@ -75,28 +78,28 @@ public class PescadorService {
 
     public PescadorResponse fyndByPescadorId(UUID id) {
         Pescador pescador = pescadorRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Erro ao buscar pescador com id: " + id));
+                .orElseThrow(() -> new ErrorLocatingPescadorByIDException("Erro ao buscar pescador com id: " + id));
 
         return toResponse(pescador);
     }
 
     public PescadorResponse fyndByPescadorCpf(String cpf) {
         Pescador pescador = pescadorRepository.findByCpf(cpf)
-                .orElseThrow(() -> new RuntimeException("Erro ao buscar pescador com cpf: " + cpf));
+                .orElseThrow(() -> new ErrorLocatingPescadorByCpfException("Erro ao buscar pescador com cpf: " + cpf));
 
         return toResponse(pescador);
     }
 
     public void deletePescador(UUID id) {
         Pescador pescador = pescadorRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Erro ao buscar pescador com id: " + id));
+                .orElseThrow(() -> new ErrorLocatingPescadorByIDException("Erro ao buscar pescador com id: " + id));
 
         pescadorRepository.delete(pescador);
     }
 
     public PescadorResponse updatePescador(PescadorRequest request, UUID id) {
         Pescador pescador = pescadorRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Erro ao buscar pescador com id: " + id));
+                .orElseThrow(() -> new ErrorLocatingPescadorByIDException("Erro ao buscar pescador com id: " + id));
 
         pescador.setNome(request.nome());
         pescador.setCpf(request.cpf());
@@ -108,13 +111,13 @@ public class PescadorService {
     @Transactional
     public ParcelaResumoResponse pagarParcela(UUID pescador_Id, long mes) {
         Pescador pescador = pescadorRepository.findById(pescador_Id)
-                .orElseThrow(() -> new RuntimeException("Erro ao buscar pescador com id: " + pescador_Id));
+                .orElseThrow(() -> new ErrorLocatingPescadorByIDException("Erro ao buscar pescador com id: " + pescador_Id));
 
         Parcela parcela = pescador.getParcelas().stream()
                 .filter(p -> p.getMes() == mes)
                 .findFirst()
                 .orElseThrow(() ->
-                        new RuntimeException("Parcela do mês " + mes + " não encontrada")
+                        new ErrorLocatingMonthException("Parcela do mês " + mes + " não encontrada")
                 );
 
         parcela.setPago(true);

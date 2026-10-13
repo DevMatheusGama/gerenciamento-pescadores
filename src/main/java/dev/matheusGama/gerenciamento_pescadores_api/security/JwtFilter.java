@@ -1,5 +1,6 @@
 package dev.matheusGama.gerenciamento_pescadores_api.security;
 
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import dev.matheusGama.gerenciamento_pescadores_api.entity.Usuario;
 import dev.matheusGama.gerenciamento_pescadores_api.repository.UsuarioRepository;
 import jakarta.servlet.FilterChain;
@@ -24,25 +25,42 @@ public class JwtFilter extends OncePerRequestFilter {
     private final UsuarioRepository usuarioRepository;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            FilterChain filterChain
+    ) throws ServletException, IOException {
+
         String token = recoveryToken(request);
 
         if (token != null) {
-            String email = jwtService.validateToken(token);
+            try {
+                String email = jwtService.validateToken(token);
 
-            if (email != null) {
-                Usuario usuario = usuarioRepository.findByEmail(email)
-                        .orElseThrow(() -> new RuntimeException("Erro ao buscar usuario."));
+                if (email != null) {
+                    Usuario usuario = usuarioRepository.findByEmail(email)
+                            .orElseThrow(() ->
+                                    new RuntimeException("Erro ao buscar usuario.")
+                            );
 
-                var authorities = List.of(new SimpleGrantedAuthority("ROLE_" + usuario.getRole().getRole()));
+                    var authorities = List.of(
+                            new SimpleGrantedAuthority(
+                                    "ROLE_" + usuario.getRole().getRole()
+                            )
+                    );
 
-                var authentication = new UsernamePasswordAuthenticationToken(
-                        usuario,
-                        null,
-                        authorities
-                );
+                    var authentication =
+                            new UsernamePasswordAuthenticationToken(
+                                    usuario,
+                                    null,
+                                    authorities
+                            );
 
-                SecurityContextHolder.getContext().setAuthentication(authentication);
+                    SecurityContextHolder.getContext()
+                            .setAuthentication(authentication);
+                }
+            } catch (JWTVerificationException | IllegalArgumentException exception) {
+                SecurityContextHolder.clearContext();
             }
         }
 
