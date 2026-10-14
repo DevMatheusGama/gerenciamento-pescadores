@@ -5,7 +5,6 @@ import dev.matheusGama.gerenciamento_pescadores_api.dto.response.ParcelaResumoRe
 import dev.matheusGama.gerenciamento_pescadores_api.dto.response.PescadorResponse;
 import dev.matheusGama.gerenciamento_pescadores_api.service.PescadorService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,17 +24,17 @@ public class PescadorController {
 
     @GetMapping
     public ResponseEntity<List<PescadorResponse>> findAllPescadores() {
-        return ResponseEntity.ok(pescadorService.fyndAllPescadores());
+        return ResponseEntity.ok(pescadorService.findAllPescadores());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<PescadorResponse> findByPescadorId(@PathVariable UUID id) {
-        return ResponseEntity.ok(pescadorService.fyndByPescadorId(id));
+        return ResponseEntity.ok(pescadorService.findByPescadorId(id));
     }
 
     @GetMapping("/cpf/{cpf}")
     public ResponseEntity<PescadorResponse> findByPescadorCpf(@PathVariable String cpf) {
-        return ResponseEntity.ok(pescadorService.fyndByPescadorCpf(cpf));
+        return ResponseEntity.ok(pescadorService.findByPescadorCpf(cpf));
     }
 
     @PutMapping("/{id}")

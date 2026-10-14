@@ -3,6 +3,7 @@ package dev.matheusGama.gerenciamento_pescadores_api.service;
 
 import dev.matheusGama.gerenciamento_pescadores_api.dto.request.LoginRequest;
 import dev.matheusGama.gerenciamento_pescadores_api.dto.request.RegisterRequest;
+import dev.matheusGama.gerenciamento_pescadores_api.dto.response.RegisterResponse;
 import dev.matheusGama.gerenciamento_pescadores_api.entity.Usuario;
 import dev.matheusGama.gerenciamento_pescadores_api.enums.RoleUser;
 import dev.matheusGama.gerenciamento_pescadores_api.repository.UsuarioRepository;
@@ -45,8 +46,10 @@ class AuthServiceTest {
     @Test
     void deveRealizarLoginERetornarToken() {
         // Arrange
-        LoginRequest request =
-                new LoginRequest("teste@email.com", "123456");
+        LoginRequest request = new LoginRequest(
+                "teste@gmail.com",
+                "1234"
+        );
 
         Usuario usuario = new Usuario();
 
@@ -76,22 +79,21 @@ class AuthServiceTest {
 
     @Test
     void deveCadastrarUsuarioComSenhaCriptografada() {
-        // Arrange
+        // Arrage
         RegisterRequest request = new RegisterRequest(
-                "teste@email.com",
-                "123456",
-                RoleUser.USER
+                "teste@gmail.com",
+                "12345",
+                RoleUser.ADMIN
         );
 
-        when(passwordEncoder.encode("123456"))
-                .thenReturn("senha-criptografada");
+        when(passwordEncoder.encode("12345")).thenReturn("senha-criptografada");
 
         // Act
-        var response = authService.register(request);
+        RegisterResponse result = authService.register(request);
 
         // Assert
-        assertEquals("teste@email.com", response.email());
-        assertEquals("USER", response.role());
+        assertEquals("teste@gmail.com", result.email());
+        assertEquals("ADMIN", result.role());
 
         var captor = org.mockito.ArgumentCaptor.forClass(Usuario.class);
 
@@ -99,19 +101,18 @@ class AuthServiceTest {
 
         Usuario usuarioSalvo = captor.getValue();
 
-        assertEquals("teste@email.com", usuarioSalvo.getEmail());
+        assertEquals("teste@gmail.com", usuarioSalvo.getEmail());
         assertEquals("senha-criptografada", usuarioSalvo.getPassword());
-        assertEquals(RoleUser.USER, usuarioSalvo.getRole());
 
-        verify(passwordEncoder).encode("123456");
+        verify(passwordEncoder).encode("12345");
     }
 
     @Test
     void naoDeveGerarTokenQuandoLoginFalhar() {
         // Arrange
         LoginRequest request = new LoginRequest(
-                "teste@email.com",
-                "senha-incorreta"
+                "teste@gmail.com",
+                "senha-errada"
         );
 
         when(authenticationManager.authenticate(

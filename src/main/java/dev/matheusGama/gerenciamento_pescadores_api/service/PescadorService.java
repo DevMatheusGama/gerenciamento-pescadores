@@ -9,7 +9,6 @@ import dev.matheusGama.gerenciamento_pescadores_api.enuns.ParcelaEnum;
 import dev.matheusGama.gerenciamento_pescadores_api.exception.ErrorLocatingMonthException;
 import dev.matheusGama.gerenciamento_pescadores_api.exception.ErrorLocatingPescadorByCpfException;
 import dev.matheusGama.gerenciamento_pescadores_api.exception.ErrorLocatingPescadorByIDException;
-import dev.matheusGama.gerenciamento_pescadores_api.repository.ParcelaRepository;
 import dev.matheusGama.gerenciamento_pescadores_api.repository.PescadorRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,7 +23,6 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class PescadorService {
     private final PescadorRepository pescadorRepository;
-    private final ParcelaRepository parcelaRepository;
 
     private PescadorResponse toResponse(Pescador pescador) {
         List<ParcelaResumoResponse> parcelas = pescador.getParcelas().stream()
@@ -48,6 +46,18 @@ public class PescadorService {
     }
 
     public PescadorResponse createPescador(PescadorRequest request) {
+        if (request.nome() == null || request.nome().isBlank()) {
+            throw new IllegalArgumentException("Nome invalido.");
+        }
+
+        if (request.cpf() == null || request.cpf().isBlank()) {
+            throw new IllegalArgumentException("Cpf invalido");
+        }
+
+        if (request.endereco() == null || request.endereco().isBlank()) {
+            throw new IllegalArgumentException("Endereço invalido.");
+        }
+
         Pescador pescador = new Pescador();
 
         pescador.setNome(request.nome());
@@ -70,20 +80,20 @@ public class PescadorService {
         return toResponse(pescadorRepository.save(pescador));
     }
 
-    public List<PescadorResponse> fyndAllPescadores() {
+    public List<PescadorResponse> findAllPescadores() {
         return pescadorRepository.findAll().stream()
                 .map(this::toResponse)
                 .toList();
     }
 
-    public PescadorResponse fyndByPescadorId(UUID id) {
+    public PescadorResponse findByPescadorId(UUID id) {
         Pescador pescador = pescadorRepository.findById(id)
                 .orElseThrow(() -> new ErrorLocatingPescadorByIDException("Erro ao buscar pescador com id: " + id));
 
         return toResponse(pescador);
     }
 
-    public PescadorResponse fyndByPescadorCpf(String cpf) {
+    public PescadorResponse findByPescadorCpf(String cpf) {
         Pescador pescador = pescadorRepository.findByCpf(cpf)
                 .orElseThrow(() -> new ErrorLocatingPescadorByCpfException("Erro ao buscar pescador com cpf: " + cpf));
 

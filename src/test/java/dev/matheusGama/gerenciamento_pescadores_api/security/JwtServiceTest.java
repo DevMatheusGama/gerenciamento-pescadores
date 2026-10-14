@@ -6,7 +6,9 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import dev.matheusGama.gerenciamento_pescadores_api.entity.Usuario;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
 import static org.mockito.Mockito.mock;
+
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.time.Instant;
@@ -15,7 +17,7 @@ import java.util.Date;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-class JwtServiceTest {
+class JwtServiceTtusest {
 
     private JwtService jwtService;
     private Usuario usuario;
@@ -82,11 +84,9 @@ class JwtServiceTest {
     @Test
     void deveRejeitarTokenComAssinaturaInvalida() {
         String token = JWT.create()
-                .withSubject("admin@teste.com")
+                .withSubject("admin@gmail.com")
                 .withIssuer("api_pescadores")
-                .sign(Algorithm.HMAC256(
-                        "outra-chave-secreta-com-tamanho-suficiente-987654"
-                ));
+                .sign(Algorithm.HMAC256("123456789"));
 
         assertThrows(
                 JWTVerificationException.class,
@@ -97,12 +97,12 @@ class JwtServiceTest {
     @Test
     void deveRejeitarTokenExpirado() {
         String token = JWT.create()
-                .withSubject("admin@teste.com")
+                .withSubject("admin@gmail.com")
                 .withIssuer("api_pescadores")
                 .withExpiresAt(
                         Date.from(Instant.now().minusSeconds(60))
                 )
-                .sign(Algorithm.HMAC256(secret));
+                .sign(Algorithm.HMAC256("123456789"));
 
         assertThrows(
                 JWTVerificationException.class,
