@@ -40,6 +40,7 @@ public class PescadorService {
                 pescador.getId(),
                 pescador.getNome(),
                 pescador.getCpf(),
+                pescador.getContato(),
                 pescador.getEndereco(),
                 parcelas
         );
@@ -62,6 +63,7 @@ public class PescadorService {
 
         pescador.setNome(request.nome());
         pescador.setCpf(request.cpf());
+        pescador.setContato(request.conato());
         pescador.setEndereco(request.endereco());
 
         for (int i = 1; i <= 12; i++) {

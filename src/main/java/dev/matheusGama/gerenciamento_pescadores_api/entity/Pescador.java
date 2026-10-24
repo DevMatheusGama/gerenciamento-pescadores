@@ -25,6 +25,8 @@ public class Pescador {
     @Column(unique = true)
     private String cpf;
 
+    private String contato;
+
     private String endereco;
 
     @OneToMany(mappedBy = "pescador", cascade = CascadeType.ALL)

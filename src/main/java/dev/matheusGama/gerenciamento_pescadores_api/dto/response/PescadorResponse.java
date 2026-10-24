@@ -7,6 +7,7 @@ public record PescadorResponse(
         UUID pescador_id,
         String nome,
         String cpf,
+        String contato,
         String endereco,
         List<ParcelaResumoResponse> parcelas
 ) {

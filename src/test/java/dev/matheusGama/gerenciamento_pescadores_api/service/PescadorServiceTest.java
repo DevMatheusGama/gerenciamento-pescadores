@@ -40,6 +40,7 @@ class PescadorServiceTest {
         PescadorRequest request = new PescadorRequest(
                 "Matheus",
                 "111.222.333-44",
+                "99 999999999",
                 "Rua x"
         );
 
@@ -69,6 +70,7 @@ class PescadorServiceTest {
         PescadorRequest request = new PescadorRequest(
                 null,
                 "111.222.333-44",
+                "99 999999999",
                 "Rua x"
         );
 
@@ -249,6 +251,7 @@ class PescadorServiceTest {
         PescadorRequest request = new PescadorRequest(
                 "Gabigol",
                 "157.157.157-44",
+                "99 999999999",
                 "Barra da Tijuca"
         );
 
