@@ -29,6 +29,8 @@ public class Pescador {
 
     private String endereco;
 
+    private String observacao;
+
     @OneToMany(mappedBy = "pescador", cascade = CascadeType.ALL)
     private List<Parcela> parcelas = new ArrayList<>();
 }

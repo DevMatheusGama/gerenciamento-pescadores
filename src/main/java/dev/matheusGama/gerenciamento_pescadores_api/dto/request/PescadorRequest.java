@@ -8,7 +8,8 @@ public record PescadorRequest(
         @NotBlank(message = "Cpf do pescador é invalido")
         String cpf,
         @NotBlank(message = "Contato do pescador é invalido")
-        String conato,
+        String contato,
+        String observacao,
         @NotBlank(message = "Enderço do pescador é invalido")
         String endereco
 ) {

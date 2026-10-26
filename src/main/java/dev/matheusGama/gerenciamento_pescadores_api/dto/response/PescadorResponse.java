@@ -8,6 +8,7 @@ public record PescadorResponse(
         String nome,
         String cpf,
         String contato,
+        String observacao,
         String endereco,
         List<ParcelaResumoResponse> parcelas
 ) {
