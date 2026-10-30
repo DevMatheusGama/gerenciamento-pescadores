@@ -5,6 +5,7 @@ import dev.matheusGama.gerenciamento_pescadores_api.dto.request.RegisterRequest;
 import dev.matheusGama.gerenciamento_pescadores_api.dto.response.LoginResponse;
 import dev.matheusGama.gerenciamento_pescadores_api.dto.response.RegisterResponse;
 import dev.matheusGama.gerenciamento_pescadores_api.service.AuthService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
@@ -23,14 +24,14 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/register")
-    public ResponseEntity<RegisterResponse> login(@RequestBody RegisterRequest registerRequest) {
+    public ResponseEntity<RegisterResponse> login(@RequestBody @Valid RegisterRequest registerRequest) {
         RegisterResponse RegisterResponse = authService.register(registerRequest);
 
         return ResponseEntity.ok(RegisterResponse);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<LoginResponse> login(@RequestBody @Valid LoginRequest loginRequest) {
         String token = authService.login(loginRequest);
 
         ResponseCookie cookie = ResponseCookie

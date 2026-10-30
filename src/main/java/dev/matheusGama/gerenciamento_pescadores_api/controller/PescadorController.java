@@ -4,6 +4,7 @@ import dev.matheusGama.gerenciamento_pescadores_api.dto.request.PescadorRequest;
 import dev.matheusGama.gerenciamento_pescadores_api.dto.response.ParcelaResumoResponse;
 import dev.matheusGama.gerenciamento_pescadores_api.dto.response.PescadorResponse;
 import dev.matheusGama.gerenciamento_pescadores_api.service.PescadorService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +19,7 @@ public class PescadorController {
     private final PescadorService pescadorService;
 
     @PostMapping
-    public ResponseEntity<PescadorResponse> createPescador(@RequestBody PescadorRequest request) {
+    public ResponseEntity<PescadorResponse> createPescador(@RequestBody @Valid PescadorRequest request) {
         return ResponseEntity.ok(pescadorService.createPescador(request));
     }
 
@@ -38,7 +39,7 @@ public class PescadorController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PescadorResponse> updatePescador(@PathVariable UUID id, @RequestBody PescadorRequest request) {
+    public ResponseEntity<PescadorResponse> updatePescador(@PathVariable UUID id, @RequestBody @Valid PescadorRequest request) {
         return ResponseEntity.ok(pescadorService.updatePescador(request, id));
     }
 

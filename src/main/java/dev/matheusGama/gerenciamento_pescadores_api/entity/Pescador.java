@@ -27,7 +27,8 @@ public class Pescador {
 
     private String contato;
 
-    private String endereco;
+    @OneToOne(mappedBy = "pescador", cascade = CascadeType.ALL)
+    private Endereco endereco;
 
     private String observacao;
 

@@ -1,8 +1,10 @@
 package dev.matheusGama.gerenciamento_pescadores_api.service;
 
 import dev.matheusGama.gerenciamento_pescadores_api.dto.request.PescadorRequest;
+import dev.matheusGama.gerenciamento_pescadores_api.dto.response.EnderecoResponse;
 import dev.matheusGama.gerenciamento_pescadores_api.dto.response.ParcelaResumoResponse;
 import dev.matheusGama.gerenciamento_pescadores_api.dto.response.PescadorResponse;
+import dev.matheusGama.gerenciamento_pescadores_api.entity.Endereco;
 import dev.matheusGama.gerenciamento_pescadores_api.entity.Parcela;
 import dev.matheusGama.gerenciamento_pescadores_api.entity.Pescador;
 import dev.matheusGama.gerenciamento_pescadores_api.enuns.ParcelaEnum;
@@ -36,13 +38,21 @@ public class PescadorService {
                 ))
                 .toList();
 
+        EnderecoResponse enderecoResponse = new EnderecoResponse(
+                pescador.getEndereco().getMunicipio(),
+                pescador.getEndereco().getBairro(),
+                pescador.getEndereco().getCep(),
+                pescador.getEndereco().getLogradouroNumero(),
+                pescador.getEndereco().getComplemento()
+        );
+
         return new PescadorResponse(
                 pescador.getId(),
                 pescador.getNome(),
                 pescador.getCpf(),
                 pescador.getContato(),
                 pescador.getObservacao(),
-                pescador.getEndereco(),
+                enderecoResponse,
                 parcelas
         );
     }
@@ -56,7 +66,7 @@ public class PescadorService {
             throw new IllegalArgumentException("Cpf invalido");
         }
 
-        if (request.endereco() == null || request.endereco().isBlank()) {
+        if (request.endereco() == null) {
             throw new IllegalArgumentException("Endereço invalido.");
         }
 
@@ -66,7 +76,17 @@ public class PescadorService {
         pescador.setCpf(request.cpf());
         pescador.setContato(request.contato());
         pescador.setObservacao(request.observacao());
-        pescador.setEndereco(request.endereco());
+
+        Endereco endereco = new Endereco();
+
+        endereco.setMunicipio(request.endereco().municipio());
+        endereco.setBairro(request.endereco().bairro());
+        endereco.setCep(request.endereco().cep());
+        endereco.setLogradouroNumero(request.endereco().logradouroNumero());
+        endereco.setComplemento(request.endereco().complemento());
+        endereco.setPescador(pescador);
+
+        pescador.setEndereco(endereco);
 
         for (int i = 1; i <= 12; i++) {
             Parcela parcela = new Parcela();
@@ -117,7 +137,16 @@ public class PescadorService {
 
         pescador.setNome(request.nome());
         pescador.setCpf(request.cpf());
-        pescador.setEndereco(request.endereco());
+        pescador.setContato(request.contato());
+        pescador.setObservacao(request.observacao());
+
+        Endereco endereco = pescador.getEndereco();
+
+        endereco.setMunicipio(request.endereco().municipio());
+        endereco.setBairro(request.endereco().bairro());
+        endereco.setCep(request.endereco().cep());
+        endereco.setLogradouroNumero(request.endereco().logradouroNumero());
+        endereco.setComplemento(request.endereco().complemento());
 
         return toResponse(pescadorRepository.save(pescador));
     }

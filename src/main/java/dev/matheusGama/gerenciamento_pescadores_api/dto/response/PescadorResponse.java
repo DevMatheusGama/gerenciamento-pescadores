@@ -9,7 +9,7 @@ public record PescadorResponse(
         String cpf,
         String contato,
         String observacao,
-        String endereco,
+        EnderecoResponse endereco,
         List<ParcelaResumoResponse> parcelas
 ) {
 }
