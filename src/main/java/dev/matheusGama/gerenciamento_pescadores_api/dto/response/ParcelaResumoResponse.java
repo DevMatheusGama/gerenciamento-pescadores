@@ -6,6 +6,7 @@ import java.util.UUID;
 
 public record ParcelaResumoResponse(
         UUID parcela_id,
+        String nomePescador,
         String nomeMes,
         long mes,
         BigDecimal valor,

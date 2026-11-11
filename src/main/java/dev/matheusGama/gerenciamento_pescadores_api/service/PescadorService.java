@@ -30,6 +30,7 @@ public class PescadorService {
         List<ParcelaResumoResponse> parcelas = pescador.getParcelas().stream()
                 .map(parcela -> new ParcelaResumoResponse(
                         parcela.getId(),
+                        parcela.getNomePescador(),
                         parcela.getNomeMes(),
                         parcela.getMes(),
                         parcela.getValor(),
@@ -91,6 +92,7 @@ public class PescadorService {
         for (int i = 1; i <= 12; i++) {
             Parcela parcela = new Parcela();
 
+            parcela.setNomePescador(request.nome());
             parcela.setNomeMes(ParcelaEnum.obterNomeMes(i));
             parcela.setMes(i);
             parcela.setValor(BigDecimal.valueOf(25));
@@ -168,6 +170,7 @@ public class PescadorService {
 
         return new ParcelaResumoResponse(
                 parcela.getId(),
+                parcela.getNomePescador(),
                 parcela.getNomeMes(),
                 parcela.getMes(),
                 parcela.getValor(),

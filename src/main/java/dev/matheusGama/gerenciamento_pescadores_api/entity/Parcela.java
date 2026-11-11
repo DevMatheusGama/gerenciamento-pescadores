@@ -20,6 +20,8 @@ public class Parcela {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
+    private String nomePescador;
+
     private String nomeMes;
 
     private long mes;

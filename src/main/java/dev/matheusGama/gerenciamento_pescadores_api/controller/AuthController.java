@@ -49,7 +49,7 @@ public class AuthController {
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<Void> logou() {
+    public ResponseEntity<Void> logout() {
         ResponseCookie cookie = ResponseCookie
                 .from("access_token", "")
                 .httpOnly(true)

@@ -54,9 +54,12 @@ public class JwtFilter extends OncePerRequestFilter {
                             )
                     );
 
+                    CustomUserDetails userDetails =
+                            new CustomUserDetails(usuario);
+
                     var authentication =
                             new UsernamePasswordAuthenticationToken(
-                                    usuario,
+                                    userDetails,
                                     null,
                                     authorities
                             );
