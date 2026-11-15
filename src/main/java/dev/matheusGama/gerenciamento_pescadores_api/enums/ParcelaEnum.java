@@ -1,4 +1,4 @@
-package dev.matheusGama.gerenciamento_pescadores_api.enuns;
+package dev.matheusGama.gerenciamento_pescadores_api.enums;
 
 public enum ParcelaEnum {
     JANEIRO(1, "Janeiro"),

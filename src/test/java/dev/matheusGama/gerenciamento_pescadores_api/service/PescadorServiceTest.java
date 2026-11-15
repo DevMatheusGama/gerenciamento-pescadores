@@ -1,8 +1,10 @@
 package dev.matheusGama.gerenciamento_pescadores_api.service;
 
+import dev.matheusGama.gerenciamento_pescadores_api.dto.request.EnderecoRequest;
 import dev.matheusGama.gerenciamento_pescadores_api.dto.request.PescadorRequest;
 import dev.matheusGama.gerenciamento_pescadores_api.dto.response.ParcelaResumoResponse;
 import dev.matheusGama.gerenciamento_pescadores_api.dto.response.PescadorResponse;
+import dev.matheusGama.gerenciamento_pescadores_api.entity.Endereco;
 import dev.matheusGama.gerenciamento_pescadores_api.entity.Parcela;
 import dev.matheusGama.gerenciamento_pescadores_api.entity.Pescador;
 import dev.matheusGama.gerenciamento_pescadores_api.exception.ErrorLocatingMonthException;
@@ -37,11 +39,14 @@ class PescadorServiceTest {
     @Test
     void deveSalvarUmNovoPescador() {
         // Arrange
+        EnderecoRequest endereco = new EnderecoRequest("Município", "Bairro", "12345-000", "Rua A, 10", "Casa");
+
         PescadorRequest request = new PescadorRequest(
                 "Matheus",
                 "111.222.333-44",
                 "99 999999999",
-                "Rua x"
+                "obs",
+                endereco
         );
 
         when(pescadorRepository.save(any(Pescador.class)))
@@ -58,7 +63,9 @@ class PescadorServiceTest {
         assertNotNull(result);
         assertEquals("Matheus", result.nome());
         assertEquals("111.222.333-44", result.cpf());
-        assertEquals("Rua x", result.endereco());
+        assertEquals("Município", result.endereco().municipio());
+        assertEquals("Bairro", result.endereco().bairro());
+        assertEquals("Rua A, 10", result.endereco().logradouroNumero());
         assertEquals(12, result.parcelas().size());
 
         verify(pescadorRepository).save(any(Pescador.class));
@@ -67,11 +74,14 @@ class PescadorServiceTest {
     @Test
     void deveLancarUmaExceptionQuandoNomeForNull() {
         // Arrange
+        EnderecoRequest endereco = new EnderecoRequest("Município", "Bairro", "12345-000", "Rua A, 10", "Casa");
+
         PescadorRequest request = new PescadorRequest(
                 null,
                 "111.222.333-44",
                 "99 999999999",
-                "Rua x"
+                "obs",
+                endereco
         );
 
         // Act + Assert
@@ -88,9 +98,16 @@ class PescadorServiceTest {
         // Assert
         Pescador pescador = new Pescador();
 
+        Endereco endereco = new Endereco();
+        endereco.setMunicipio("Município");
+        endereco.setBairro("Bairro");
+        endereco.setCep("12345-000");
+        endereco.setLogradouroNumero("Rua A, 10");
+        endereco.setComplemento("Casa");
+        pescador.setEndereco(endereco);
+
         pescador.setNome("Matheus");
         pescador.setCpf("111.222.333-44");
-        pescador.setEndereco("Rua x");
 
         List<Pescador> pescadores = new ArrayList<>();
 
@@ -132,10 +149,17 @@ class PescadorServiceTest {
         UUID id = UUID.randomUUID();
         Pescador pescador = new Pescador();
 
+        Endereco endereco = new Endereco();
+        endereco.setMunicipio("Município");
+        endereco.setBairro("Bairro");
+        endereco.setCep("12345-000");
+        endereco.setLogradouroNumero("Rua A, 10");
+        endereco.setComplemento("Casa");
+        pescador.setEndereco(endereco);
+
         pescador.setId(id);
         pescador.setNome("Matheus");
         pescador.setCpf("111.222.333-44");
-        pescador.setEndereco("Rua x");
 
         when(pescadorRepository.findById(id)).thenReturn(Optional.of(pescador));
 
@@ -147,7 +171,9 @@ class PescadorServiceTest {
         assertEquals(id, resut.pescador_id());
         assertEquals("Matheus", resut.nome());
         assertEquals("111.222.333-44", resut.cpf());
-        assertEquals("Rua x", resut.endereco());
+        assertEquals("Município", resut.endereco().municipio());
+        assertEquals("Bairro", resut.endereco().bairro());
+        assertEquals("Rua A, 10", resut.endereco().logradouroNumero());
 
         verify(pescadorRepository).findById(id);
     }
@@ -174,9 +200,16 @@ class PescadorServiceTest {
         String cpf = "111.222.333-44";
         Pescador pescador = new Pescador();
 
+        Endereco endereco = new Endereco();
+        endereco.setMunicipio("Município");
+        endereco.setBairro("Bairro");
+        endereco.setCep("12345-000");
+        endereco.setLogradouroNumero("Rua A, 10");
+        endereco.setComplemento("Casa");
+        pescador.setEndereco(endereco);
+
         pescador.setNome("Matheus");
         pescador.setCpf(cpf);
-        pescador.setEndereco("Rua x");
 
         when(pescadorRepository.findByCpf(cpf)).thenReturn(Optional.of(pescador));
 
@@ -187,7 +220,9 @@ class PescadorServiceTest {
         assertNotNull(resut);
         assertEquals("Matheus", resut.nome());
         assertEquals("111.222.333-44", resut.cpf());
-        assertEquals("Rua x", resut.endereco());
+        assertEquals("Município", resut.endereco().municipio());
+        assertEquals("Bairro", resut.endereco().bairro());
+        assertEquals("Rua A, 10", resut.endereco().logradouroNumero());
 
         verify(pescadorRepository).findByCpf(cpf);
     }
@@ -248,20 +283,30 @@ class PescadorServiceTest {
     @Test
     void deveAtualizardadosDosPescadores() {
         // Arrage
+        EnderecoRequest enderecoRequest = new EnderecoRequest("Município", "Bairro", "12345-000", "Rua A, 10", "Casa");
+
         PescadorRequest request = new PescadorRequest(
                 "Gabigol",
                 "157.157.157-44",
                 "99 999999999",
-                "Barra da Tijuca"
+                "obs",
+                enderecoRequest
         );
 
         UUID id = UUID.randomUUID();
         Pescador pescador = new Pescador();
 
+        Endereco endereco = new Endereco();
+        endereco.setMunicipio("Município");
+        endereco.setBairro("Bairro");
+        endereco.setCep("12345-000");
+        endereco.setLogradouroNumero("Rua A, 10");
+        endereco.setComplemento("Casa");
+        pescador.setEndereco(endereco);
+
         pescador.setId(id);
         pescador.setNome("Matheus");
         pescador.setCpf("111.222.333-44");
-        pescador.setEndereco("Rua x");
 
         when(pescadorRepository.findById(id)).thenReturn(Optional.of(pescador));
         when(pescadorRepository.save(any(Pescador.class)))
@@ -275,7 +320,9 @@ class PescadorServiceTest {
         assertNotNull(result);
         assertEquals("Gabigol", result.nome());
         assertEquals("157.157.157-44", result.cpf());
-        assertEquals("Barra da Tijuca", result.endereco());
+        assertEquals("Município", result.endereco().municipio());
+        assertEquals("Bairro", result.endereco().bairro());
+        assertEquals("Rua A, 10", result.endereco().logradouroNumero());
 
         verify(pescadorRepository).findById(id);
         verify(pescadorRepository).save(any(Pescador.class));

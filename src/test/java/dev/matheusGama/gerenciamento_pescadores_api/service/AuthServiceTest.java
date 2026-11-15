@@ -83,6 +83,7 @@ class AuthServiceTest {
         RegisterRequest request = new RegisterRequest(
                 "teste@gmail.com",
                 "12345",
+                "Matheus",
                 RoleUser.ADMIN
         );
 
@@ -134,6 +135,7 @@ class AuthServiceTest {
         RegisterRequest request = new RegisterRequest(
                 "admin@email.com",
                 "123456",
+                "Matheus",
                 RoleUser.ADMIN
         );
 

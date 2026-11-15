@@ -7,7 +7,7 @@ import dev.matheusGama.gerenciamento_pescadores_api.dto.response.PescadorRespons
 import dev.matheusGama.gerenciamento_pescadores_api.entity.Endereco;
 import dev.matheusGama.gerenciamento_pescadores_api.entity.Parcela;
 import dev.matheusGama.gerenciamento_pescadores_api.entity.Pescador;
-import dev.matheusGama.gerenciamento_pescadores_api.enuns.ParcelaEnum;
+import dev.matheusGama.gerenciamento_pescadores_api.enums.ParcelaEnum;
 import dev.matheusGama.gerenciamento_pescadores_api.exception.ErrorLocatingMonthException;
 import dev.matheusGama.gerenciamento_pescadores_api.exception.ErrorLocatingPescadorByCpfException;
 import dev.matheusGama.gerenciamento_pescadores_api.exception.ErrorLocatingPescadorByIDException;
