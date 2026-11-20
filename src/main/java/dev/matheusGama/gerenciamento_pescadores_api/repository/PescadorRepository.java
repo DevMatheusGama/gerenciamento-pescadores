@@ -8,4 +8,5 @@ import java.util.UUID;
 
 public interface PescadorRepository extends JpaRepository<Pescador, UUID> {
     Optional<Pescador> findByCpf(String cpf);
+    long count();
 }

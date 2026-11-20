@@ -24,7 +24,7 @@ public class Parcela {
 
     private String nomeMes;
 
-    private long mes;
+    private int mes;
 
     private BigDecimal valor;
 
